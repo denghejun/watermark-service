@@ -47,3 +47,7 @@ https://github.com/DerSalvador/eventing-contrib.git
 
 ##### Conribution:
 Issue Tracker: https://trello.com/b/tuDO5DYR/watermark-service-application
+
+
+#### RUN
+`go run ./cmd/watermark/watermark.go`

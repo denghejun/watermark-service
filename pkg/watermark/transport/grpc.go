@@ -57,10 +57,11 @@ func (g *grpcServer) Get(ctx context.Context, r *watermark.GetRequest) (*waterma
 }
 
 func (g *grpcServer) ServiceStatus(ctx context.Context, r *watermark.ServiceStatusRequest) (*watermark.ServiceStatusReply, error) {
-	_, rep, err := g.get.ServeGRPC(ctx, r)
+	_, rep, err := g.serviceStatus.ServeGRPC(ctx, r)
 	if err != nil {
 		return nil, err
 	}
+
 	return rep.(*watermark.ServiceStatusReply), nil
 }
 
@@ -155,6 +156,6 @@ func decodeGRPCAddDocumentResponse(ctx context.Context, grpcReply interface{}) (
 }
 
 func decodeGRPCServiceStatusResponse(ctx context.Context, grpcReply interface{}) (interface{}, error) {
-	reply := grpcReply.(*watermark.ServiceStatusReply)
-	return endpoints.ServiceStatusResponse{Code: int(reply.Code), Err: reply.Err}, nil
+	reply := grpcReply.(endpoints.ServiceStatusResponse)
+	return &watermark.ServiceStatusReply{Code: int64(int(reply.Code)), Err: reply.Err}, nil
 }

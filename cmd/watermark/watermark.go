@@ -17,6 +17,7 @@ import (
 	kitgrpc "github.com/go-kit/kit/transport/grpc"
 	"github.com/oklog/oklog/pkg/group"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 const (
@@ -69,6 +70,7 @@ func main() {
 			// the here demonstrated zipkin tracing middleware.
 			baseServer := grpc.NewServer(grpc.UnaryInterceptor(kitgrpc.Interceptor))
 			pb.RegisterWatermarkServer(baseServer, grpcServer)
+			reflection.Register(baseServer)
 			return baseServer.Serve(grpcListener)
 		}, func(error) {
 			grpcListener.Close()
